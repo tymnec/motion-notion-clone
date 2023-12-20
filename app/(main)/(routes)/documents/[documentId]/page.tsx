@@ -1,21 +1,36 @@
 "use client";
 
+// Import necessary modules and components
 import { useMutation, useQuery } from "convex/react";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
-
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { Toolbar } from "@/components/toolbar";
 import { Cover } from "@/components/cover";
 import { Skeleton } from "@/components/ui/skeleton";
 
+/**
+ * Props for the DocumentIdPage component.
+ */
 interface DocumentIdPageProps {
+  /**
+   * The parameters for the component.
+   */
   params: {
+    /**
+     * The document ID.
+     */
     documentId: Id<"documents">;
   };
 }
 
+/**
+ * Renders the DocumentIdPage component.
+ *
+ * @param {DocumentIdPageProps} params - The props object containing the parameters.
+ * @return {JSX.Element} The rendered DocumentIdPage component.
+ */
 const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
   const Editor = useMemo(
     () => dynamic(() => import("@/components/editor"), { ssr: false }),
@@ -28,6 +43,12 @@ const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
 
   const update = useMutation(api.documents.update);
 
+  /**
+   * A function that is called when the content changes.
+   *
+   * @param {string} content - The new content value.
+   * @return {void} This function does not return anything.
+   */
   const onChange = (content: string) => {
     update({
       id: params.documentId,

@@ -1,13 +1,19 @@
 "use client";
 
+// Import necessary modules and components
 import { useConvexAuth } from "convex/react";
 import { redirect } from "next/navigation";
-
 import { Spinner } from "@/components/spinner";
 import { SearchCommand } from "@/components/search-command";
-
 import { Navigation } from "./_components/navigation";
 
+/**
+ * Renders the main layout of the application.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The children components.
+ * @return {React.ReactNode} The rendered main layout.
+ */
 const MainLayout = ({
   children
 }: {
