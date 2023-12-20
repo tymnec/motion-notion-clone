@@ -1,8 +1,8 @@
 "use client";
 
+// Import necessary modules and components
 import { ChevronsLeftRight } from "lucide-react";
 import { useUser, SignOutButton } from "@clerk/clerk-react";
-
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -12,7 +12,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+/**
+ * Renders a user item component.
+ *
+ * @return {JSX.Element} The user item component.
+ */
 export const UserItem = () => {
+  // Get the user from useUser hook
   const { user } = useUser();
 
   return (
