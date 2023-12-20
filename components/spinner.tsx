@@ -16,13 +16,19 @@ const spinnerVariants = cva(
       }
     },
     defaultVariants: {
-      size: "default",
+      size: "lg",
     },
   },
 );
 
 interface SpinnerProps extends VariantProps<typeof spinnerVariants> {}
 
+/**
+ * Renders a spinner component with the specified size.
+ *
+ * @param {SpinnerProps} size - The size of the spinner.
+ * @return {ReactNode} The rendered spinner component.
+ */
 export const Spinner = ({
   size,
 }: SpinnerProps) => {

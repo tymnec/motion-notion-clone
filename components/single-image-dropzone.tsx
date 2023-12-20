@@ -29,15 +29,38 @@ type InputProps = {
 };
 
 const ERROR_MESSAGES = {
+  /**
+   * Checks if the file is too large based on the maximum size.
+   *
+   * @param {number} maxSize - The maximum file size allowed.
+   * @return {string} - A message indicating that the file is too large.
+   */
   fileTooLarge(maxSize: number) {
     return `The file is too large. Max size is ${formatFileSize(maxSize)}.`;
   },
+  /**
+   * A description of the entire function.
+   *
+   * @param {type} paramName - description of parameter
+   * @return {type} description of return value
+   */
   fileInvalidType() {
     return 'Invalid file type.';
   },
+  /**
+   * A function that checks if there are too many files.
+   *
+   * @param {number} maxFiles - the maximum number of files allowed
+   * @return {string} a message indicating the number of files that can be added
+   */
   tooManyFiles(maxFiles: number) {
     return `You can only add ${maxFiles} file(s).`;
   },
+  /**
+   * The function returns a message indicating that the file is not supported.
+   *
+   * @return {string} The message indicating that the file is not supported.
+   */
   fileNotSupported() {
     return 'The file is not supported.';
   },
@@ -72,6 +95,11 @@ const SingleImageDropzone = React.forwardRef<HTMLInputElement, InputProps>(
       accept: { 'image/*': [] },
       multiple: false,
       disabled,
+      /**
+       * Handles the drop event when files are dropped onto the component.
+       *
+       * @param {Array<File>} acceptedFiles - An array of accepted files.
+       */
       onDrop: (acceptedFiles) => {
         const file = acceptedFiles[0];
         if (file) {
@@ -207,6 +235,12 @@ const Button = React.forwardRef<
 });
 Button.displayName = 'Button';
 
+/**
+ * Formats the given file size in bytes to a human-readable string.
+ *
+ * @param {number} bytes - The file size in bytes.
+ * @return {string} - The formatted file size as a string.
+ */
 function formatFileSize(bytes?: number) {
   if (!bytes) {
     return '0 Bytes';

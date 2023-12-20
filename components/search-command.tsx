@@ -17,6 +17,11 @@ import {
 import { useSearch } from "@/hooks/use-search";
 import { api } from "@/convex/_generated/api";
 
+/**
+ * Renders the search command component.
+ *
+ * @return {JSX.Element} The rendered search command component.
+ */
 export const SearchCommand = () => {
   const { user } = useUser();
   const router = useRouter();
@@ -32,6 +37,11 @@ export const SearchCommand = () => {
   }, []);
 
   useEffect(() => {
+    /**
+     * A function that handles the 'keydown' event and performs an action if the key combination 'Ctrl + k' or 'Command + k' is pressed.
+     *
+     * @param {KeyboardEvent} e - The keyboard event object representing the 'keydown' event.
+     */
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -43,6 +53,12 @@ export const SearchCommand = () => {
     return () => document.removeEventListener("keydown", down);
   }, [toggle]);
 
+  /**
+   * Executes the onSelect function.
+   *
+   * @param {string} id - The ID of the document.
+   * @return {void} This function does not return any value.
+   */
   const onSelect = (id: string) => {
     router.push(`/documents/${id}`);
     onClose();

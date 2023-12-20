@@ -17,6 +17,13 @@ interface ToolbarProps {
   preview?: boolean;
 }
 
+/**
+ * Renders the Toolbar component.
+ *
+ * @param {Object} initialData - The initial data for the Toolbar.
+ * @param {boolean} preview - Determines if the Toolbar is in preview mode.
+ * @return {JSX.Element} The rendered Toolbar component.
+ */
 export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
   const inputRef = useRef<ElementRef<"textarea">>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -27,6 +34,11 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
 
   const coverImage = useCoverImage();
 
+  /**
+   * Enables the input field for editing.
+   *
+   * @return {void} No return value.
+   */
   const enableInput = () => {
     if (preview) return;
 
@@ -39,6 +51,12 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
 
   const disableInput = () => setIsEditing(false);
 
+  /**
+   * Updates the value and calls the 'update' function with the new value.
+   *
+   * @param {string} value - The new value to be set.
+   * @return {void} This function does not return anything.
+   */
   const onInput = (value: string) => {
     setValue(value);
     update({
@@ -47,6 +65,11 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
     });
   };
 
+  /**
+   * Handles the key down event for the text area.
+   *
+   * @param {React.KeyboardEvent<HTMLTextAreaElement>} event - The keyboard event object.
+   */
   const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -54,6 +77,12 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
     }
   };
 
+  /**
+   * A function to handle the selection of an icon.
+   *
+   * @param {string} icon - The selected icon.
+   * @return {void} This function does not return a value.
+   */
   const onIconSelect = (icon: string) => {
     update({
       id: initialData._id,
@@ -61,6 +90,12 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
     });
   };
 
+  /**
+   * A function that handles the removal of an icon.
+   *
+   * @param {object} - An object containing the ID of the icon to be removed.
+   * @return {void} - This function does not return anything.
+   */
   const onRemoveIcon = () => {
     removeIcon({
       id: initialData._id,

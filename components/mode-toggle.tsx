@@ -12,6 +12,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+/**
+ * Renders a toggle button for switching between light and dark themes.
+ *
+ * @return {JSX.Element} The rendered toggle button.
+ */
 export function ModeToggle() {
   const { setTheme } = useTheme()
 

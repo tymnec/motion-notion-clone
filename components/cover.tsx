@@ -18,12 +18,24 @@ interface CoverImageProps {
   preview?: boolean;
 }
 
+/**
+ * Renders a cover image component.
+ *
+ * @param {string} url - The URL of the cover image.
+ * @param {boolean} preview - Whether the cover image is in preview mode.
+ * @return {JSX.Element} The rendered cover image component.
+ */
 export const Cover = ({ url, preview }: CoverImageProps) => {
   const { edgestore } = useEdgeStore();
   const params = useParams();
   const coverImage = useCoverImage();
   const removeCoverImage = useMutation(api.documents.removeCoverImage);
 
+  /**
+   * Remove a file from the public file storage and remove the cover image for a document.
+   *
+   * @return {Promise<void>} This function does not return a value.
+   */
   const onRemove = async () => {
     if (url) {
       await edgestore.publicFiles.delete({
@@ -70,6 +82,11 @@ export const Cover = ({ url, preview }: CoverImageProps) => {
   );
 };
 
+/**
+ * Generates the function comment for the given function body.
+ *
+ * @return {JSX.Element} The skeleton component.
+ */
 Cover.Skeleton = function CoverSkeleton() {
   return <Skeleton className="w-full h-[12vh]" />;
 };

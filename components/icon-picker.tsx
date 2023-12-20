@@ -15,6 +15,14 @@ interface IconPickerProps {
   asChild?: boolean;
 };
 
+/**
+ * Renders an icon picker component.
+ *
+ * @param {object} onChange - The function to be called when the selected icon changes.
+ * @param {ReactNode} children - The child node to be rendered as the trigger for the popover.
+ * @param {boolean} asChild - Determines if the children should be rendered as a child component.
+ * @return {JSX.Element} The rendered icon picker component.
+ */
 export const IconPicker = ({
   onChange,
   children,
