@@ -1,10 +1,10 @@
 "use client";
 
+// Import necessary modules and components
 import { useState } from "react";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
 import { Check, Copy, Globe } from "lucide-react";
-
 import { Doc } from "@/convex/_generated/dataModel";
 import {
   PopoverTrigger,
@@ -15,21 +15,43 @@ import { useOrigin } from "@/hooks/use-origin";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 
+/**
+ * Interface representing the props for the Publish component.
+ */
 interface PublishProps {
-  initialData: Doc<"documents">
-};
+  /**
+   * The initial data for the component.
+   */
+  initialData: Doc<"documents">;
+}
 
+/**
+ * Renders a Publish component.
+ *
+ * @param {PublishProps} initialData - the initial data for the Publish component
+ * @return {JSX.Element} - the rendered Publish component
+ */
 export const Publish = ({
   initialData
 }: PublishProps) => {
-  const origin = useOrigin();
-  const update = useMutation(api.documents.update);
+ // Get the origin URL of the current page
+ const origin = useOrigin();
+ 
+ // Define the mutation function for updating documents
+ const update = useMutation(api.documents.update);
+ 
+ // State variables to track whether the data has been copied and if the form is being submitted
+ const [copied, setCopied] = useState(false);
+ const [isSubmitting, setIsSubmitting] = useState(false);
+ 
+ // Generate the URL for previewing the document based on the initial data's ID
+ const url = `${origin}/preview/${initialData._id}`;
 
-  const [copied, setCopied] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const url = `${origin}/preview/${initialData._id}`;
-
+/**
+ * Executes the onPublish action.
+ *
+ * @return {void} 
+ */
   const onPublish = () => {
     setIsSubmitting(true);
 
@@ -46,6 +68,11 @@ export const Publish = ({
     });
   };
 
+  /**
+   * Executes the necessary actions when the "Unpublish" button is clicked.
+   *
+   * @return {void} No return value.
+   */
   const onUnpublish = () => {
     setIsSubmitting(true);
 
@@ -62,6 +89,12 @@ export const Publish = ({
     });
   };
 
+  /**
+   * Copies the value of 'url' to the clipboard and sets 'copied' to true.
+   *
+   * @param {string} url - the URL to be copied to the clipboard
+   * @return {void}
+   */
   const onCopy = () => {
     navigator.clipboard.writeText(url);
     setCopied(true);
