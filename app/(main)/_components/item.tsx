@@ -1,5 +1,6 @@
 "use client";
 
+// Import necessary modules and components
 import {
   ChevronDown,
   ChevronRight,
@@ -12,7 +13,6 @@ import { useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useUser } from "@clerk/clerk-react";
-
 import { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -25,19 +25,77 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
+/**
+ * Props for the Item component.
+ */
 interface ItemProps {
+  /**
+   * The unique identifier for the item.
+   */
   id?: Id<"documents">;
+
+  /**
+   * The icon for the document.
+   */
   documentIcon?: string;
+
+  /**
+   * Whether the item is active.
+   */
   active?: boolean;
+
+  /**
+   * Whether the item is expanded.
+   */
   expanded?: boolean;
+
+  /**
+   * Whether the item is used for search.
+   */
   isSearch?: boolean;
+
+  /**
+   * The level of the item in the hierarchy.
+   */
   level?: number;
+
+  /**
+   * Callback function when the item is expanded.
+   */
   onExpand?: () => void;
+
+  /**
+   * The label of the item.
+   */
   label: string;
+
+  /**
+   * Callback function when the item is clicked.
+   */
   onClick?: () => void;
+
+  /**
+   * The icon for the item.
+   */
   icon: LucideIcon;
 }
 
+/**
+ * Renders an item component.
+ *
+ * @param {ItemProps} props - The props object containing the following properties:
+ *   - id: The ID of the item.
+ *   - label: The label of the item.
+ *   - onClick: The click event handler for the item.
+ *   - icon: The icon component for the item.
+ *   - active: A boolean indicating whether the item is active.
+ *   - documentIcon: The document icon component for the item.
+ *   - isSearch: A boolean indicating whether the item is for search.
+ *   - level: The level of the item.
+ *   - onExpand: The expand event handler for the item.
+ *   - expanded: A boolean indicating whether the item is expanded.
+ * @return {JSX.Element} The rendered item component.
+ */
 export const Item = ({
   id,
   label,
@@ -50,23 +108,55 @@ export const Item = ({
   onExpand,
   expanded,
 }: ItemProps) => {
+  // Define state variables
   const { user } = useUser();
+
+  // Define the 'router' hook
   const router = useRouter();
+
+  // Define the 'create' mutation
   const create = useMutation(api.documents.create);
+
+  // Define the 'archive' mutation
   const archive = useMutation(api.documents.archive);
 
-  const onArchive = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  /**
+   * Handles the archive event.
+   *
+   * @param {React.MouseEvent<HTMLDivElement, MouseEvent>} event - The event object.
+   * @return {void} No return value.
+   */
+  const handleArchive = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ): void => {
+    // Stop event propagation
     event.stopPropagation();
-    if (!id) return;
-    const promise = archive({ id }).then(() => router.push("/documents"));
 
-    toast.promise(promise, {
+    // Check if `id` is falsy
+    if (!id) {
+      return;
+    }
+
+    // Call the archive function with the `id` parameter
+    const archivePromise = archive({ id });
+
+    // Navigate to "/documents" after the archive promise resolves
+    archivePromise.then(() => router.push("/documents"));
+
+    // Show a toast notification with loading, success, and error messages
+    toast.promise(archivePromise, {
       loading: "Moving to trash...",
       success: "Note moved to trash!",
       error: "Failed to archive note.",
     });
   };
 
+  /**
+   * Handles the expand event.
+   *
+   * @param {React.MouseEvent<HTMLDivElement, MouseEvent>} event - The mouse event.
+   * @return {void} No return value.
+   */
   const handleExpand = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -74,25 +164,48 @@ export const Item = ({
     onExpand?.();
   };
 
+  /**
+   * Creates a new note when the user clicks on a div element.
+   *
+   * @param {React.MouseEvent<HTMLDivElement, MouseEvent>} event - The mouse event triggered by the click on the div element.
+   * @return {void} This function does not return anything.
+   */
   const onCreate = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
-    if (!id) return;
-    const promise = create({ title: "Untitled", parentDocument: id }).then(
-      (documentId) => {
+
+    if (!id) {
+      return;
+    }
+
+    /**
+     * Creates a new note.
+     *
+     * @return {Promise<void>} - A promise that resolves when the note is created.
+     */
+    const createNote = async () => {
+      try {
+        const documentId = await create({
+          title: "Untitled",
+          parentDocument: id,
+        });
+
         if (!expanded) {
           onExpand?.();
         }
-        router.push(`/documents/${documentId}`);
-      }
-    );
 
-    toast.promise(promise, {
+        router.push(`/documents/${documentId}`);
+        toast.success("New note created!");
+      } catch (error) {
+        toast.error("Failed to create a new note.");
+      }
+    };
+
+    toast.promise(createNote(), {
       loading: "Creating a new note...",
-      success: "New note created!",
-      error: "Failed to create a new note.",
     });
   };
 
+  // Define the 'ChevronIcon'
   const ChevronIcon = expanded ? ChevronDown : ChevronRight;
 
   return (
@@ -144,7 +257,7 @@ export const Item = ({
               side="right"
               forceMount
             >
-              <DropdownMenuItem onClick={onArchive}>
+              <DropdownMenuItem onClick={handleArchive}>
                 <Trash className="h-4 w-4 mr-2" />
                 Delete
               </DropdownMenuItem>
@@ -167,6 +280,13 @@ export const Item = ({
   );
 };
 
+/**
+ * Generates a skeleton item for rendering a loading state.
+ *
+ * @param {Object} props - The props for the ItemSkeleton component.
+ * @param {number} props.level - The level of the skeleton item (optional).
+ * @return {JSX.Element} - The rendered skeleton item.
+ */
 Item.Skeleton = function ItemSkeleton({ level }: { level?: number }) {
   return (
     <div
