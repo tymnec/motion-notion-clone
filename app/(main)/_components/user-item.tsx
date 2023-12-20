@@ -40,7 +40,7 @@ export const UserItem = () => {
         alignOffset={-11}
         forceMount
       >
-        <div className="flex flex-col space-y-4 p-3 rounded-xl bg-slate-100">
+        <div className="flex flex-col space-y-4 p-3 rounded-xl bg-slate-100 dark:bg-neutral-800">
           <p className="text-xs font-medium leading-none text-muted-foreground">
             {user?.emailAddresses[0].emailAddress}
           </p>
