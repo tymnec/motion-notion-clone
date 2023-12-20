@@ -1,5 +1,6 @@
 "use client";
 
+// Import necessary modules and components
 import {
   ChevronsLeft,
   MenuIcon,
@@ -14,7 +15,6 @@ import { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
-
 import { cn } from "@/lib/utils";
 import { api } from "@/convex/_generated/api";
 import {
@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/popover";
 import { useSearch } from "@/hooks/use-search";
 import { useSettings } from "@/hooks/use-settings";
-
 import { UserItem } from "./user-item";
 import { Item } from "./item";
 import { DocumentList } from "./document-list";
@@ -32,21 +31,70 @@ import { TrashBox } from "./trash-box";
 import { Navbar } from "./navbar";
 import { Separator } from "@/components/ui/separator";
 
+/**
+ * Renders the navigation component.
+ *
+ * @return {void}
+ */
 export const Navigation = () => {
+  // Get the router instance
   const router = useRouter();
+
+  // Get the settings and search hooks
   const settings = useSettings();
   const search = useSearch();
+
+  /**
+   * Hook that returns the URL parameters from the current route.
+   */
   const params = useParams();
+
+  /**
+   * Hook that returns the current pathname.
+   */
   const pathname = usePathname();
+
+  /**
+   * Hook that returns whether the screen width is below 768px (mobile).
+   */
   const isMobile = useMediaQuery("(max-width: 768px)");
+
+  /**
+   * Mutation hook that creates a document using the API.
+   */
   const create = useMutation(api.documents.create);
 
+  /**
+   * Ref that indicates whether the user is currently resizing.
+   */
   const isResizingRef = useRef(false);
+
+  /**
+   * Ref to the sidebar element.
+   */
   const sidebarRef = useRef<ElementRef<"aside">>(null);
+
+  /**
+   * Ref to the navbar element.
+   */
   const navbarRef = useRef<ElementRef<"div">>(null);
+
+  /**
+   * State that indicates whether the app is currently resetting.
+   */
   const [isResetting, setIsResetting] = useState(false);
+
+  /**
+   * State that indicates whether the sidebar is currently collapsed.
+   * Initially set based on the screen width.
+   */
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
 
+  /**
+   * This useEffect hook is responsible for handling the behavior when the 'isMobile' state changes.
+   * If 'isMobile' is true, it calls the 'collapse' function.
+   * If 'isMobile' is false, it calls the 'resetWidth' function.
+   */
   useEffect(() => {
     if (isMobile) {
       collapse();
@@ -55,12 +103,21 @@ export const Navigation = () => {
     }
   }, [isMobile]);
 
+  /**
+   * This useEffect hook is responsible for handling the behavior when either the 'pathname' or 'isMobile' state changes.
+   * If 'isMobile' is true, it calls the 'collapse' function.
+   */
   useEffect(() => {
     if (isMobile) {
       collapse();
     }
   }, [pathname, isMobile]);
 
+  /**
+   * Handles the mouse down event.
+   *
+   * @param {React.MouseEvent<HTMLDivElement, MouseEvent>} event - The mouse down event.
+   */
   const handleMouseDown = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -72,16 +129,31 @@ export const Navigation = () => {
     document.addEventListener("mouseup", handleMouseUp);
   };
 
+  /**
+   * Handles the mouse move event.
+   *
+   * @param {MouseEvent} event - The mouse move event.
+   */
   const handleMouseMove = (event: MouseEvent) => {
+    // Check if resizing is currently happening
     if (!isResizingRef.current) return;
+
+    // Get the new width based on the clientX value of the event
     let newWidth = event.clientX;
 
+    // Make sure the new width is within the specified range
     if (newWidth < 240) newWidth = 240;
     if (newWidth > 480) newWidth = 480;
 
+    // Update the width of the sidebar and the left position and width of the navbar
     if (sidebarRef.current && navbarRef.current) {
+      // Set the width of the sidebar
       sidebarRef.current.style.width = `${newWidth}px`;
+
+      // Set the left position of the navbar
       navbarRef.current.style.setProperty("left", `${newWidth}px`);
+
+      // Set the width of the navbar using the new width of the sidebar
       navbarRef.current.style.setProperty(
         "width",
         `calc(100% - ${newWidth}px)`
@@ -89,12 +161,22 @@ export const Navigation = () => {
     }
   };
 
+  /**
+   * Handles the mouse up event.
+   *
+   * @return {void}
+   */
   const handleMouseUp = () => {
     isResizingRef.current = false;
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
   };
 
+  /**
+   * Resets the width of the sidebar and navbar.
+   *
+   * @return {void} No return value.
+   */
   const resetWidth = () => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(false);
@@ -110,6 +192,11 @@ export const Navigation = () => {
     }
   };
 
+  /**
+   * Collapses the sidebar and expands the navbar.
+   *
+   * @return {void} This function does not return anything.
+   */
   const collapse = () => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(true);
@@ -122,6 +209,11 @@ export const Navigation = () => {
     }
   };
 
+  /**
+   * Function to handle the creation of a new note.
+   *
+   * @return {void} No return value.
+   */
   const handleCreate = () => {
     const promise = create({ title: "Untitled" }).then((documentId) =>
       router.push(`/documents/${documentId}`)
@@ -167,7 +259,7 @@ export const Navigation = () => {
           <DocumentList />
           <Item onClick={handleCreate} icon={Plus} label="Add a page" />
 
-          <Separator className="dark:bg-neutral-600"/>
+          <Separator className="dark:bg-neutral-600" />
 
           <Popover>
             <PopoverTrigger className="w-full mt-4">
