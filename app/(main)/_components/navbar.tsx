@@ -1,25 +1,43 @@
 "use client";
 
+// Import necessary modules and components
 import { useQuery } from "convex/react";
 import { useParams } from "next/navigation";
 import { MenuIcon } from "lucide-react";
-
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-
 import { Title } from "./title";
 import { Banner } from "./banner";
 import { Menu } from "./menu";
 import { Publish } from "./publish";
 
+/**
+ * Interface for Navbar component props.
+ */
 interface NavbarProps {
+  /**
+   * Flag indicating whether the navbar is collapsed or not.
+   */
   isCollapsed: boolean;
+
+  /**
+   * Callback function to reset the width of the navbar.
+   */
   onResetWidth: () => void;
 }
 
+/**
+ * Renders the Navbar component.
+ *
+ * @param {boolean} isCollapsed - Flag indicating whether the Navbar is collapsed.
+ * @param {Function} onResetWidth - Callback function to reset the width of the Navbar.
+ * @return {JSX.Element} The rendered Navbar component.
+ */
 export const Navbar = ({ isCollapsed, onResetWidth }: NavbarProps) => {
+  // Get the document ID from the URL
   const params = useParams();
 
+  // Get the document from the Convex API
   const document = useQuery(api.documents.getById, {
     documentId: params.documentId as Id<"documents">,
   });
