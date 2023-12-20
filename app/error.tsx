@@ -5,6 +5,11 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
+/**
+ * Renders an error component.
+ *
+ * @return {JSX.Element} The rendered error component.
+ */
 const Error = () => {
   return (
     <div className="h-full flex flex-col items-center justify-center space-y-4">
