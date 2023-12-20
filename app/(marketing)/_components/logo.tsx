@@ -8,6 +8,11 @@ const font = Poppins({
   weight: ["400", "600"],
 });
 
+/**
+ * Renders the logo component.
+ *
+ * @return {JSX.Element} The rendered logo component.
+ */
 export const Logo = () => {
   return (
     <div className="hidden md:flex items-center gap-x-2">

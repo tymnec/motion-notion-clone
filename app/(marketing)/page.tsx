@@ -2,6 +2,11 @@ import { Footer } from "./_components/footer";
 import { Heading } from "./_components/heading";
 import { Heroes } from "./_components/heroes";
 
+/**
+ * Renders the marketing page component.
+ *
+ * @return {JSX.Element} The rendered marketing page component.
+ */
 const MarketingPage = () => {
   return (
     <div className="min-h-full flex flex-col dark:bg-[#1F1F1F]">

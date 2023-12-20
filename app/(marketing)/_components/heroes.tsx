@@ -1,5 +1,10 @@
 import Image from "next/image";
 
+/**
+ * Renders the Heroes component.
+ *
+ * @return {JSX.Element} The rendered Heroes component.
+ */
 export const Heroes = () => {
   return (
     <div className="flex flex-col items-center justify-center max-w-5xl">

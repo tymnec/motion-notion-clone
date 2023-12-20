@@ -3,15 +3,18 @@
 import { useConvexAuth } from "convex/react";
 import { SignInButton, UserButton } from "@clerk/clerk-react";
 import Link from "next/link";
-
 import { useScrollTop } from "@/hooks/use-scroll-top";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/spinner";
 import { cn } from "@/lib/utils";
-
 import { Logo } from "./logo";
 
+/**
+ * Renders the Navbar component.
+ *
+ * @return {JSX.Element} The rendered Navbar component.
+ */
 export const Navbar = () => {
   const { isAuthenticated, isLoading } = useConvexAuth();
   const scrolled = useScrollTop();

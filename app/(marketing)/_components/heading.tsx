@@ -8,6 +8,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/spinner";
 
+/**
+ * Renders the Heading component.
+ *
+ * @return {JSX.Element} The rendered component.
+ */
 export const Heading = () => {
   const { isAuthenticated, isLoading } = useConvexAuth();
 
