@@ -5,6 +5,11 @@ import { useSettings } from "@/hooks/use-settings";
 import { Label } from "@/components/ui/label";
 import { ModeToggle } from "@/components/mode-toggle";
 
+/**
+ * Renders the settings modal component.
+ *
+ * @return {JSX.Element} The rendered settings modal component.
+ */
 export const SettingsModal = () => {
   const settings = useSettings();
 

@@ -15,6 +15,11 @@ import { useEdgeStore } from "@/lib/edgestore";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 
+/**
+ * Generates the function comment for the given function body in a markdown code block with the correct language syntax.
+ *
+ * @return {void} The function does not return anything.
+ */
 export const CoverImageModal = () => {
   const params = useParams();
   const update = useMutation(api.documents.update);
@@ -24,12 +29,22 @@ export const CoverImageModal = () => {
   const [file, setFile] = useState<File>();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  /**
+   * Closes the file, stops the submission process, and closes the cover image.
+   */
   const onClose = () => {
     setFile(undefined);
     setIsSubmitting(false);
     coverImage.onClose();
   }
 
+  /**
+   * A function that is triggered when the file input changes. It sets the file state,
+   * uploads the file to the server, updates the cover image of a document, and closes the modal.
+   *
+   * @param {File} file - The selected file.
+   * @return {Promise<void>} - A promise that resolves when the function finishes executing.
+   */
   const onChange = async (file?: File) => {
     if (file) {
       setIsSubmitting(true);
